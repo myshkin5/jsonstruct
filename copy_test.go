@@ -10,7 +10,7 @@ import (
 )
 
 var _ = Describe("Copy", func() {
-	FIt("does a deep copy with no shared mutables", func() {
+	It("does a deep copy with no shared mutables", func() {
 		orig := jsonstruct.New()
 		orig.SetInt("int-val", 737)
 		orig.SetString("sub.sub.value", "neat string")

@@ -29,10 +29,10 @@ cd $(dirname $0)/..
 goimports -w .
 
 echo -e "\033[1m\033[42mUnit tests...                                                                   \033[0m"
-ginkgo -r -keepGoing -race -skipPackage integration_tests $@
+ginkgo -r --skipPackage integration_tests --keepGoing --randomizeAllSpecs --randomizeSuites --failOnPending --cover --trace --race --progress $@
 
 echo -e "\033[1m\033[42mIntegration tests...                                                            \033[0m"
 cd integration_tests
-ginkgo -r -keepGoing -race -skipPackage integration_tests $@
+ginkgo -r --keepGoing --randomizeAllSpecs --randomizeSuites --failOnPending --cover --trace --race --progress $@
 
 echo -e "\033[1m\033[42mCompleted successfully.                                                         \033[0m"
