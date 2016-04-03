@@ -2,6 +2,7 @@ package jsonstruct
 
 import (
 	"errors"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -22,12 +23,16 @@ func (s JSONStruct) String(dotPath string) (string, bool) {
 		return "", false
 	}
 
-	stringValue, ok := value.(string)
-	if !ok {
+	switch value := value.(type) {
+	case string:
+		return value, true
+	case int:
+		return strconv.Itoa(value), true
+	case float64:
+		return strconv.FormatFloat(value, 'f', -1, 64), true
+	default:
 		return "", false
 	}
-
-	return stringValue, true
 }
 
 func (s JSONStruct) StringWithDefault(dotPath, defaultValue string) string {
@@ -93,7 +98,11 @@ func (s JSONStruct) DurationWithDefault(dotPath string, defaultValue time.Durati
 }
 
 func (s JSONStruct) findElement(dotPath string) (interface{}, bool) {
-	keys := strings.Split(dotPath, ".")
+	if dotPath[0:1] != "." {
+		return nil, false
+	}
+
+	keys := strings.Split(dotPath[1:], ".")
 
 	parent := s
 

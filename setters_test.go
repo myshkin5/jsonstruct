@@ -26,39 +26,39 @@ var _ = Describe("Setters", func() {
 
 			Expect(err).NotTo(HaveOccurred())
 
-			values.SetString("this", "something else")
+			Expect(values.SetString(".this", "something else")).To(Succeed())
 
-			value, ok := values.String("this")
+			value, ok := values.String(".this")
 			Expect(ok).To(BeTrue())
 			Expect(value).To(Equal("something else"))
 
-			values.SetString("parent.child", "new value")
+			Expect(values.SetString(".parent.child", "new value")).To(Succeed())
 
-			value, ok = values.String("parent.child")
+			value, ok = values.String(".parent.child")
 			Expect(ok).To(BeTrue())
 			Expect(value).To(Equal("new value"))
 		})
 
 		It("can set a string to empty string", func() {
 			values = jsonstruct.New()
-			values.SetString("value", "something")
-			values.SetString("value", "")
+			Expect(values.SetString(".value", "something")).To(Succeed())
+			Expect(values.SetString(".value", "")).To(Succeed())
 
-			value, ok := values.String("value")
+			value, ok := values.String(".value")
 			Expect(ok).To(BeTrue())
 			Expect(value).To(Equal(""))
 
-			values.SetString("another", "")
+			Expect(values.SetString(".another", "")).To(Succeed())
 
-			another, ok := values.String("another")
+			another, ok := values.String(".another")
 			Expect(ok).To(BeTrue())
 			Expect(another).To(Equal(""))
 		})
 
 		It("can set values multiple levels deep", func() {
 			values = jsonstruct.New()
-			values.SetString("one.two.three", "hi")
-			value, ok := values.String("one.two.three")
+			Expect(values.SetString(".one.two.three", "hi")).To(Succeed())
+			value, ok := values.String(".one.two.three")
 			Expect(ok).To(BeTrue())
 			Expect(value).To(Equal("hi"))
 		})
@@ -75,15 +75,15 @@ var _ = Describe("Setters", func() {
 
 			Expect(err).NotTo(HaveOccurred())
 
-			values.SetInt("this", 1000000)
+			Expect(values.SetInt(".this", 1000000)).To(Succeed())
 
-			value, ok := values.Int("this")
+			value, ok := values.Int(".this")
 			Expect(ok).To(BeTrue())
 			Expect(value).To(Equal(1000000))
 
-			values.SetInt("parent.child", 12345)
+			Expect(values.SetInt(".parent.child", 12345)).To(Succeed())
 
-			value, ok = values.Int("parent.child")
+			value, ok = values.Int(".parent.child")
 			Expect(ok).To(BeTrue())
 			Expect(value).To(Equal(12345))
 		})
@@ -93,7 +93,7 @@ var _ = Describe("Setters", func() {
 		It("sets a duration value as a string", func() {
 			values = jsonstruct.New()
 
-			values.SetDuration("duration-path", 32*time.Second)
+			Expect(values.SetDuration(".duration-path", 32*time.Second)).To(Succeed())
 
 			Expect(values["duration-path"]).To(Equal("32s"))
 		})
