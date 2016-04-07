@@ -33,6 +33,15 @@ func (s JSONStruct) SetDuration(dotPath string, value time.Duration) error {
 	return nil
 }
 
+func (s JSONStruct) SetList(dotPath string, value []interface{}) error {
+	parent, lastKey, err := s.findParent(dotPath)
+	if err != nil {
+		return err
+	}
+	parent[lastKey] = value
+	return nil
+}
+
 func (s JSONStruct) findParent(dotPath string) (JSONStruct, string, error) {
 	if dotPath[0:1] != "." {
 		return nil, "", errors.New("Only . paths are currently supported")

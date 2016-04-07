@@ -236,4 +236,24 @@ var _ = Describe("JSON", func() {
 			Expect(values.DurationWithDefault(".present-path", 42*time.Millisecond)).To(Equal(84 * time.Millisecond))
 		})
 	})
+
+	Describe("List()", func() {
+		It("returns not ok when the value doesn't exist", func() {
+			_, ok := values.List(".not there")
+			Expect(ok).To(BeFalse())
+		})
+
+		It("returns an error when the value isn't a list", func() {
+			values["not-a-list-path"] = "not-a-list"
+			_, ok := values.List(".not-a-list-path")
+			Expect(ok).To(BeFalse())
+		})
+
+		It("returns a valid list", func() {
+			values["valid-list"] = []interface{}{1, 2}
+			list, ok := values.List(".valid-list")
+			Expect(ok).To(BeTrue())
+			Expect(list).To(Equal([]interface{}{1, 2}))
+		})
+	})
 })

@@ -18,7 +18,7 @@ var (
 )
 
 func (s JSONStruct) String(dotPath string) (string, bool) {
-	value, ok := s.findElement(dotPath)
+	value, ok := s.FindElement(dotPath)
 	if !ok {
 		return "", false
 	}
@@ -45,7 +45,7 @@ func (s JSONStruct) StringWithDefault(dotPath, defaultValue string) string {
 }
 
 func (s JSONStruct) Int(dotPath string) (int, bool) {
-	value, ok := s.findElement(dotPath)
+	value, ok := s.FindElement(dotPath)
 	if !ok {
 		return 0, false
 	}
@@ -97,7 +97,17 @@ func (s JSONStruct) DurationWithDefault(dotPath string, defaultValue time.Durati
 	}
 }
 
-func (s JSONStruct) findElement(dotPath string) (interface{}, bool) {
+func (s JSONStruct) List(dotPath string) ([]interface{}, bool) {
+	value, ok := s.FindElement(dotPath)
+	if !ok {
+		return nil, false
+	}
+
+	list, ok := value.([]interface{})
+	return list, ok
+}
+
+func (s JSONStruct) FindElement(dotPath string) (interface{}, bool) {
 	if dotPath[0:1] != "." {
 		return nil, false
 	}

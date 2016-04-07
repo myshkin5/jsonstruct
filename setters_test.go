@@ -98,4 +98,27 @@ var _ = Describe("Setters", func() {
 			Expect(values["duration-path"]).To(Equal("32s"))
 		})
 	})
+
+	Describe("SetList()", func() {
+		It("sets a list", func() {
+			values = jsonstruct.New()
+
+			sub := jsonstruct.New()
+			sub.SetString(".x", "y")
+			list := []interface{}{1, "u", sub}
+
+			Expect(values.SetList(".doc.list", list)).To(Succeed())
+
+			data, err := json.Marshal(values)
+			Expect(err).NotTo(HaveOccurred())
+
+			Expect(data).To(MatchJSON(`{
+				"doc": {
+					"list": [
+						1, "u", { "x": "y" }
+					]
+				}
+			}`))
+		})
+	})
 })
