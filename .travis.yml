@@ -1,0 +1,11 @@
+language: go
+
+go:
+  - 1.6.2
+  - tip
+install:
+  - go get golang.org/x/tools/cmd/goimports
+  - go get github.com/onsi/ginkgo/ginkgo
+script:
+  - go get -t .
+  - ./scripts/test
